@@ -4,42 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6903d484-c577-4809-903b-058144788c47" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/MIT.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/BuddyJavaPlugin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/BuddyPlugin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/Observable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/closeable/Closeable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/color/MinecraftColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/DefaultEventObserver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/DefaultObservableEventBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/EventManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/ObservableEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/builder/ObservableEventBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/lifecycle/ConditionalLifecycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/lifecycle/DurableLifecycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/lifecycle/IndefiniteLifecycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/lifecycle/Lifecycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/event/lifecycle/RanLifecycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/item/ItemStacks.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/location/Locations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/math/FastMath.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/pattern/Builder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/registry/Registry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/registry/type/Int2ObjectRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/registry/type/UUID2ObjectRegistry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/reloadable/Reloadable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buddy/src/main/java/me/atilt/buddy/supplier/Lazy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="6903d484-c577-4809-903b-058144788c47" name="Changes" comment="1.0.0">
+      <change afterPath="$PROJECT_DIR$/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,11 +112,34 @@
       <updated>1680137766919</updated>
       <workItem from="1680137768034" duration="40378000" />
       <workItem from="1680233024276" duration="427000" />
-      <workItem from="1680233465007" duration="3979000" />
+      <workItem from="1680233465007" duration="4688000" />
     </task>
+    <task id="LOCAL-00001" summary="1.0.0">
+      <created>1680237827834</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1680237827834</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1.0.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0" />
   </component>
 </project>
