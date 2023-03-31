@@ -44,7 +44,7 @@ public class DurableLifecycle implements Lifecycle {
 
     @Override
     public boolean test(Event event) {
-        return closed();
+        return !closed();
     }
 
     @Override

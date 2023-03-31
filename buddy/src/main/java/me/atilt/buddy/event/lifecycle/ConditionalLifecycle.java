@@ -42,7 +42,7 @@ public class ConditionalLifecycle implements Lifecycle {
 
     @Override
     public boolean test(Event event) {
-        return this.closed();
+        return !this.closed();
     }
 
     @Override

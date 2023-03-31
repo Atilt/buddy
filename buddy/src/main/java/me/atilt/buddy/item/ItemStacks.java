@@ -86,7 +86,7 @@ public final class ItemStacks {
             Objects.requireNonNull(operator, "function");
 
             ItemMeta itemMeta = this.itemStack.getItemMeta();
-            if (metaType.isInstance(itemMeta)) {
+            if (!metaType.isInstance(itemMeta)) {
                 throw new IllegalStateException("meta mismatch");
             }
             this.itemStack.setItemMeta(operator.apply(metaType.cast(itemMeta)));
