@@ -27,11 +27,27 @@ package me.atilt.buddy.event;
 import me.atilt.buddy.Observable;
 import me.atilt.buddy.event.lifecycle.Lifecycle;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public interface ObservableEvent<E extends Event> extends Observable {
 
     @Nonnull
-    Lifecycle lifecycle();
+    Lifecycle<E> lifecycle();
+
+    @Nonnull
+    Class<E> eventType();
+
+    @Nonnull
+    EventPriority priority();
+
+    @Nonnull
+    List<Predicate<E>> only();
+
+    @Nonnull
+    Consumer<E> on();
 }

@@ -29,15 +29,19 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
+import java.util.function.Predicate;
 
-public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> {
+public final class EventConditionalLifecycle<E extends Event> implements Lifecycle<E> {
 
     private final ExpirationPolicy expirationPolicy;
+    private final Predicate<E> condition;
     private boolean closed;
 
-    public IndefiniteLifecycle(@Nonnull ExpirationPolicy expirationPolicy) {
-        Objects.requireNonNull(expirationPolicy, "birthStage");
+    public EventConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull Predicate<E> condition) {
+        Objects.requireNonNull(expirationPolicy, "terminationStage");
+        Objects.requireNonNull(condition, "condition");
         this.expirationPolicy = expirationPolicy;
+        this.condition = condition;
     }
 
     @Nonnull
@@ -48,7 +52,7 @@ public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> 
 
     @Override
     public boolean test(E event) {
-        return this.closed;
+        return this.condition.test(event);
     }
 
     @Override

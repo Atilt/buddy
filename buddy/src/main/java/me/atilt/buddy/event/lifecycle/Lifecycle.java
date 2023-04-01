@@ -25,17 +25,16 @@
 package me.atilt.buddy.event.lifecycle;
 
 import me.atilt.buddy.closeable.Closeable;
+import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
-public interface Lifecycle extends Predicate<Event>, Closeable {
+public interface Lifecycle<E extends Event> extends Predicate<E>, Closeable {
 
     @Nonnull
-    static Lifecycle indefinite() {
-        return new IndefiniteLifecycle();
-    }
+    ExpirationPolicy terminationStage();
 
     @Override
     void close();

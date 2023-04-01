@@ -37,7 +37,7 @@ import java.util.function.Predicate;
 public interface ObservableEventBuilder<E extends Event> extends Builder<ObservableEvent<E>> {
 
     @Nonnull
-    ObservableEventBuilder<E> lifecycle(@Nonnull Lifecycle lifecycle);
+    ObservableEventBuilder<E> lifecycle(@Nonnull Lifecycle<E> lifecycle);
 
     @Nonnull
     ObservableEventBuilder<E> eventType(@Nonnull Class<E> eventType);

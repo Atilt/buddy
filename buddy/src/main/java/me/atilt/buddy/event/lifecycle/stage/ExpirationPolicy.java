@@ -22,36 +22,18 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.event.lifecycle.stage;
 
-import org.bukkit.event.Event;
+public enum ExpirationPolicy {
 
-import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.function.BooleanSupplier;
+    HARD,
+    SOFT;
 
-public class ConditionalLifecycle implements Lifecycle {
-
-    private final BooleanSupplier condition;
-    private boolean closed;
-
-    public ConditionalLifecycle(@Nonnull BooleanSupplier condition) {
-        Objects.requireNonNull(condition, "condition");
-        this.condition = condition;
+    public boolean hard() {
+        return this == HARD;
     }
 
-    @Override
-    public boolean test(Event event) {
-        return !this.closed();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed || this.condition.getAsBoolean();
+    public boolean soft() {
+        return this == SOFT;
     }
 }

@@ -24,27 +24,39 @@
 
 package me.atilt.buddy.event.lifecycle;
 
+import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import me.atilt.buddy.supplier.Lazy;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
-public class DurableLifecycle implements Lifecycle {
+public final class DurableLifecycle<E extends Event> implements Lifecycle<E> {
 
+    private final ExpirationPolicy expirationPolicy;
     private final Lazy<Instant> lazy;
     private final Duration duration;
     private boolean closed;
 
-    public DurableLifecycle(@Nonnull Lazy<Instant> lazy, @Nonnull Duration duration) {
+    public DurableLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull Lazy<Instant> lazy, @Nonnull Duration duration) {
+        Objects.requireNonNull(expirationPolicy, "terminationStage");
+        Objects.requireNonNull(lazy, "lazy");
+        Objects.requireNonNull(duration, "duration");
+        this.expirationPolicy = expirationPolicy;
         this.lazy = lazy;
         this.duration = duration;
     }
 
+    @Nonnull
+    public ExpirationPolicy terminationStage() {
+        return this.expirationPolicy;
+    }
+
     @Override
-    public boolean test(Event event) {
-        return !closed();
+    public boolean test(E event) {
+        return Instant.now().isAfter(this.lazy.get().plus(this.duration));
     }
 
     @Override
@@ -54,6 +66,6 @@ public class DurableLifecycle implements Lifecycle {
 
     @Override
     public boolean closed() {
-        return this.closed || Instant.now().isAfter(this.lazy.get().plus(this.duration));
+        return this.closed;
     }
 }

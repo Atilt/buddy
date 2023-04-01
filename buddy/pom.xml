@@ -68,7 +68,19 @@
                             <pattern>io.leangen.geantyref</pattern>
                             <shadedPattern>me.atilt.buddy.command.typetoken</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.github.benmanes.caffeine</pattern>
+                            <shadedPattern>me.atilt.buddy.caffeine</shadedPattern>
+                        </relocation>
                     </relocations>
+                    <filters>
+                        <filter>
+                            <artifact>com.github.ben-manes.caffeine:caffeine</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </filter>
+                    </filters>
                 </configuration>
             </plugin>
         </plugins>

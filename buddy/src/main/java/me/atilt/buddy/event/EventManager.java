@@ -24,6 +24,7 @@
 
 package me.atilt.buddy.event;
 
+import me.atilt.buddy.event.builder.ObservableEventBuilder;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
@@ -40,8 +41,8 @@ public final class EventManager {
     }
 
     @Nonnull
-    public <E extends Event> DefaultObservableEventBuilder<E> observe(@Nonnull Class<E> eventType) {
+    public <E extends Event> ObservableEventBuilder<E> observe(@Nonnull Class<E> eventType) {
         Objects.requireNonNull(eventType, "eventType");
-        return new DefaultObservableEventBuilder<>(this.plugin, eventType);
+        return DefaultEventObserver.newBuilder(this.plugin, eventType);
     }
 }

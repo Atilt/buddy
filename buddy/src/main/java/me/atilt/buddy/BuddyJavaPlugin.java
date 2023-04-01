@@ -81,9 +81,9 @@ public abstract class BuddyJavaPlugin extends JavaPlugin implements BuddyPlugin 
     public void onDisable() {
         super.onDisable();
 
-        close();
-
         disable();
+
+        close();
     }
 
     @Nonnull
@@ -110,6 +110,6 @@ public abstract class BuddyJavaPlugin extends JavaPlugin implements BuddyPlugin 
 
     @Override
     public boolean closed() {
-        return this.closed || Bukkit.getPluginManager().isPluginEnabled(this);
+        return this.closed || !Bukkit.getPluginManager().isPluginEnabled(this);
     }
 }

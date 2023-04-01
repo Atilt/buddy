@@ -27,17 +27,23 @@ package me.atilt.buddy.event.lifecycle;
 import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import org.bukkit.event.Event;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> {
+public final class IncrementalLifecycle<E extends Event> implements Lifecycle<E> {
 
     private final ExpirationPolicy expirationPolicy;
     private boolean closed;
 
-    public IndefiniteLifecycle(@Nonnull ExpirationPolicy expirationPolicy) {
-        Objects.requireNonNull(expirationPolicy, "birthStage");
+    private final int maxIncrement;
+    private final AtomicInteger count = new AtomicInteger(0);
+
+    public IncrementalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnegative int maxIncrement) {
+        Objects.requireNonNull(expirationPolicy, "terminationStage");
         this.expirationPolicy = expirationPolicy;
+        this.maxIncrement = maxIncrement;
     }
 
     @Nonnull
@@ -47,13 +53,14 @@ public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> 
     }
 
     @Override
-    public boolean test(E event) {
-        return this.closed;
+    public void close() {
+        this.closed = true;
     }
 
     @Override
-    public void close() {
-        this.closed = true;
+    public boolean test(E event) {
+        int current = this.count.getAndIncrement();
+        return current >= this.maxIncrement;
     }
 
     @Override
