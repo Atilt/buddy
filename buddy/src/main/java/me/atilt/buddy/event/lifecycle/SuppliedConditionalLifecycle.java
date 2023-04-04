@@ -46,7 +46,7 @@ public final class SuppliedConditionalLifecycle<E extends Event> implements Life
 
     @Nonnull
     @Override
-    public ExpirationPolicy terminationStage() {
+    public ExpirationPolicy expirationPolicy() {
         return this.expirationPolicy;
     }
 

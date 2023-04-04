@@ -22,49 +22,21 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.function;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
-
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
-public final class IncrementalLifecycle<E extends Event> implements Lifecycle<E> {
+public final class Consumers {
 
-    private final ExpirationPolicy expirationPolicy;
-    private boolean closed;
-
-    private final int maxIncrement;
-    private final AtomicInteger count = new AtomicInteger(0);
-
-    public IncrementalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnegative int maxIncrement) {
-        Objects.requireNonNull(expirationPolicy, "terminationStage");
-        this.expirationPolicy = expirationPolicy;
-        this.maxIncrement = maxIncrement;
-    }
+    private static final Consumer EMPTY = none -> {};
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
+    public static Consumer empty() {
+        return EMPTY;
     }
 
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean test(E event) {
-        int current = this.count.incrementAndGet();
-        return current >= this.maxIncrement;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    private Consumers() {
+        throw new IllegalStateException("This class cannot be instantiated");
     }
 }

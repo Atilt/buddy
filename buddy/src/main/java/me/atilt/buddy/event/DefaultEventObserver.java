@@ -31,6 +31,7 @@ import me.atilt.buddy.event.builder.ObservableEventBuilder;
 import me.atilt.buddy.event.lifecycle.IndefiniteLifecycle;
 import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import me.atilt.buddy.event.lifecycle.Lifecycle;
+import me.atilt.buddy.function.Consumers;
 import me.atilt.buddy.pattern.Builder;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -161,7 +162,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         }
         E found = this.eventType.cast(event);
 
-        ExpirationPolicy expirationPolicy = this.lifecycle.terminationStage();
+        ExpirationPolicy expirationPolicy = this.lifecycle.expirationPolicy();
         if (expirationPolicy.hard()) {
             if (this.lifecycle.test(found)) {
                 this.lifecycle.close();
@@ -189,8 +190,6 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
 
     private static final class DefaultObservableEventBuilder<E extends Event> implements ObservableEventBuilder<E> {
 
-        private static final Consumer EMPTY = event -> {};
-
         private final Plugin plugin;
 
         private Lifecycle<E> lifecycle;
@@ -206,7 +205,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
             this.lifecycle = new IndefiniteLifecycle<>(ExpirationPolicy.HARD);
             this.eventType = eventType;
             this.priority = EventPriority.NORMAL;
-            this.on = EMPTY;
+            this.on = Consumers.empty();
         }
 
         @Nonnull
@@ -214,14 +213,6 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         public ObservableEventBuilder<E> lifecycle(@Nonnull Lifecycle<E> lifecycle) {
             Objects.requireNonNull(lifecycle, "lifecycle");
             this.lifecycle = lifecycle;
-            return this;
-        }
-
-        @Nonnull
-        @Override
-        public ObservableEventBuilder<E> eventType(@Nonnull Class<E> eventType) {
-            Objects.requireNonNull(eventType, "eventType");
-            this.eventType = eventType;
             return this;
         }
 

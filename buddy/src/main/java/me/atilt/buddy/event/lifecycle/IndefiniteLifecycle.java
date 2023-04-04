@@ -42,7 +42,7 @@ public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> 
 
     @Nonnull
     @Override
-    public ExpirationPolicy terminationStage() {
+    public ExpirationPolicy expirationPolicy() {
         return this.expirationPolicy;
     }
 

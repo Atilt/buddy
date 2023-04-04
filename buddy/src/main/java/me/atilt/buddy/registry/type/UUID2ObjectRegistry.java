@@ -24,6 +24,7 @@
 
 package me.atilt.buddy.registry.type;
 
+import me.atilt.buddy.closeable.Closeable;
 import me.atilt.buddy.registry.Registry;
 
 import javax.annotation.Nonnull;
@@ -48,6 +49,7 @@ import java.util.UUID;
 public class UUID2ObjectRegistry<V> implements Registry<UUID, V> {
 
     private final Map<UUID, V> handle;
+    private boolean closed;
 
     public UUID2ObjectRegistry(@Nonnull Map<UUID, V> handle) {
         Objects.requireNonNull(handle, "handle");
@@ -109,10 +111,16 @@ public class UUID2ObjectRegistry<V> implements Registry<UUID, V> {
     @Override
     public void close() throws Exception {
         for (V value : this.handle.values()) {
-            if (value instanceof AutoCloseable) {
-                ((AutoCloseable) value).close();
+            if (value instanceof Closeable) {
+                ((Closeable) value).close();
             }
         }
+        this.closed = true;
+    }
+
+    @Override
+    public boolean closed() {
+        return this.closed;
     }
 
     @Override

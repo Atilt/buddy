@@ -30,6 +30,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
+import me.atilt.buddy.closeable.Closeable;
 import me.atilt.buddy.registry.Registry;
 
 import javax.annotation.Nonnull;
@@ -54,6 +55,7 @@ import java.util.Set;
 public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
 
     private final Int2ObjectMap<V> handle;
+    private boolean closed;
 
     public Int2ObjectRegistry(@Nonnull Int2ObjectMap<V> handle) {
         Objects.requireNonNull(handle, "handle");
@@ -159,10 +161,16 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     @Override
     public void close() throws Exception {
         for (V value : this.handle.values()) {
-            if (value instanceof AutoCloseable) {
-                ((AutoCloseable) value).close();
+            if (value instanceof Closeable) {
+                ((Closeable) value).close();
             }
         }
+        this.closed = true;
+    }
+
+    @Override
+    public boolean closed() {
+        return this.closed;
     }
 
     @Deprecated

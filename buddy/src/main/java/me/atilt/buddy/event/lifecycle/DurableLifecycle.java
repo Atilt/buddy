@@ -50,7 +50,7 @@ public final class DurableLifecycle<E extends Event> implements Lifecycle<E> {
     }
 
     @Nonnull
-    public ExpirationPolicy terminationStage() {
+    public ExpirationPolicy expirationPolicy() {
         return this.expirationPolicy;
     }
 

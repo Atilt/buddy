@@ -22,46 +22,19 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
-
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
+package me.atilt.buddy.function;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-public final class EventConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+public final class Suppliers {
 
-    private final ExpirationPolicy expirationPolicy;
-    private final Predicate<E> condition;
-    private boolean closed;
-
-    public EventConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull Predicate<E> condition) {
-        Objects.requireNonNull(expirationPolicy, "terminationStage");
-        Objects.requireNonNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
+    public static <T, U> Function<T, U> functionalized(@Nonnull Supplier<U> supplier) {
+        return t -> supplier.get();
     }
 
-    @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
-
-    @Override
-    public boolean test(E event) {
-        return this.condition.test(event);
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    private Suppliers() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

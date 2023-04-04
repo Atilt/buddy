@@ -24,6 +24,8 @@
 
 package me.atilt.buddy.registry;
 
+import me.atilt.buddy.closeable.Closeable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -41,7 +43,7 @@ import java.util.Set;
  * @param <K> the registry key type
  * @param <V> the registry value type
  */
-public interface Registry<K, V> extends Iterable<Map.Entry<K, V>>, AutoCloseable {
+public interface Registry<K, V> extends Iterable<Map.Entry<K, V>>, Closeable {
 
     @Nullable
     V register(@Nonnull K k, @Nonnull V v);

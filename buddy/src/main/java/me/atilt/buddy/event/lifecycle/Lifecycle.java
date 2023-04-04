@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 public interface Lifecycle<E extends Event> extends Predicate<E>, Closeable {
 
     @Nonnull
-    ExpirationPolicy terminationStage();
+    ExpirationPolicy expirationPolicy();
 
     @Override
     void close();

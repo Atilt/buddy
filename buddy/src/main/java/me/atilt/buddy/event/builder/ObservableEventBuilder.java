@@ -40,9 +40,6 @@ public interface ObservableEventBuilder<E extends Event> extends Builder<Observa
     ObservableEventBuilder<E> lifecycle(@Nonnull Lifecycle<E> lifecycle);
 
     @Nonnull
-    ObservableEventBuilder<E> eventType(@Nonnull Class<E> eventType);
-
-    @Nonnull
     ObservableEventBuilder<E> priority(@Nonnull EventPriority priority);
 
     @Nonnull
