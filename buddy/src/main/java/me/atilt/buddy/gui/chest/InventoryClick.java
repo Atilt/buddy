@@ -22,46 +22,36 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui.chest;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
+import me.atilt.buddy.function.Consumers;
+import me.atilt.buddy.gui.Click;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+public final class InventoryClick implements Click<InventoryClickEvent> {
 
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
+    private static final InventoryClick EMPTY = new InventoryClick(Consumers.biEmpty());
 
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
+    private final BiConsumer<Player, InventoryClickEvent> on;
+
+    public InventoryClick(@Nonnull BiConsumer<Player, InventoryClickEvent> on) {
+        this.on = on;
+    }
+
+    @Nonnull
+    public static InventoryClick empty() {
+        return EMPTY;
     }
 
     @Nonnull
     @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
-
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    public BiConsumer<Player, InventoryClickEvent> on() {
+        return this.on;
     }
 }

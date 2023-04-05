@@ -31,7 +31,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nonnull;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 public final class DurableLifecycle<E extends Event> implements Lifecycle<E> {
 
@@ -41,9 +41,9 @@ public final class DurableLifecycle<E extends Event> implements Lifecycle<E> {
     private boolean closed;
 
     public DurableLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull Lazy<Instant> lazy, @Nonnull Duration duration) {
-        Objects.requireNonNull(expirationPolicy, "terminationStage");
-        Objects.requireNonNull(lazy, "lazy");
-        Objects.requireNonNull(duration, "duration");
+        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
+        Preconditions.checkNotNull(lazy, "lazy");
+        Preconditions.checkNotNull(duration, "duration");
         this.expirationPolicy = expirationPolicy;
         this.lazy = lazy;
         this.duration = duration;

@@ -35,7 +35,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.function.UnaryOperator;
 
 /**
@@ -68,7 +68,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder type(@Nonnull Material type) {
-            Objects.requireNonNull(type, "type");
+            Preconditions.checkNotNull(type, "type");
             this.itemStack.setType(type);
             return this;
         }
@@ -82,8 +82,8 @@ public final class ItemStacks {
 
         @Nonnull
         public <T extends ItemMeta> Builder meta(Class<T> metaType, @Nonnull UnaryOperator<T> operator) {
-            Objects.requireNonNull(metaType, "metaType");
-            Objects.requireNonNull(operator, "function");
+            Preconditions.checkNotNull(metaType, "metaType");
+            Preconditions.checkNotNull(operator, "function");
 
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             if (!metaType.isInstance(itemMeta)) {
@@ -95,7 +95,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder meta(@Nonnull UnaryOperator<ItemMeta> function) {
-            Objects.requireNonNull(function, "function");
+            Preconditions.checkNotNull(function, "function");
             return meta(ItemMeta.class, function);
         }
 
@@ -109,7 +109,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder displayName(@Nonnull String displayName) {
-            Objects.requireNonNull(displayName, "displayName");
+            Preconditions.checkNotNull(displayName, "displayName");
             return meta(itemMeta -> {
                 itemMeta.setDisplayName(displayName);
                 return itemMeta;
@@ -118,7 +118,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder lore(@Nonnull List<String> lore) {
-            Objects.requireNonNull(lore, "lore");
+            Preconditions.checkNotNull(lore, "lore");
             return meta(itemMeta -> {
                 itemMeta.setLore(lore);
                 return itemMeta;
@@ -127,7 +127,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder enchant(@Nonnull Enchantment enchantment, @Nonnegative int level, boolean bypass) {
-            Objects.requireNonNull(enchantment, "enchantment");
+            Preconditions.checkNotNull(enchantment, "enchantment");
             Preconditions.checkArgument(level > 0, "level out of bounds: %s", level);
             return meta(itemMeta -> {
                 itemMeta.addEnchant(enchantment, level, bypass);
@@ -137,7 +137,7 @@ public final class ItemStacks {
 
         @Nonnull
         public Builder flag(@Nonnull ItemFlag... flags) {
-            Objects.requireNonNull(flags, "flags");
+            Preconditions.checkNotNull(flags, "flags");
             return meta(itemMeta -> {
                 itemMeta.addItemFlags(flags);
                return itemMeta;

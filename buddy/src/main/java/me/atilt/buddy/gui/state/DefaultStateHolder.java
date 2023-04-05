@@ -22,46 +22,57 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui.state;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
-
-import javax.annotation.Nonnull;
 import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
+import me.atilt.buddy.function.Lists;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
+public final class DefaultStateHolder implements StateHolder {
 
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
+    private final List<State> states = new ArrayList<>();
+    private final int defaultState;
+
+    private int current;
+
+    public DefaultStateHolder(@Nonnull List<State> states, @Nonnegative int defaultState) {
+        Preconditions.checkNotNull(states, "states");
+        Preconditions.checkArgument(defaultState >= 0 && defaultState < states.size(), "index out of range: %s", defaultState);
+        this.states.addAll(states);
+        this.defaultState = defaultState;
     }
 
     @Nonnull
     @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
+    public List<State> states() {
+        return Collections.unmodifiableList(this.states);
     }
 
     @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
+    public int defaultState() {
+        return this.defaultState;
     }
 
     @Override
-    public void close() {
-        this.closed = true;
+    public Iterator<State> iterator() {
+        return states().iterator();
     }
 
+    @Nonnull
     @Override
-    public boolean closed() {
-        return this.closed;
+    public State previous() {
+        return Lists.previous(this.states, this.current);
+    }
+
+    @Nonnull
+    @Override
+    public State next() {
+        return Lists.next(this.states, this.current);
     }
 }

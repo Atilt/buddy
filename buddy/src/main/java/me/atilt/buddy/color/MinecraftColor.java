@@ -28,7 +28,7 @@ import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
 import java.awt.Color;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 /**
  * Associates {@link Color} to Minecraft's in-game
@@ -73,7 +73,7 @@ public enum MinecraftColor {
 
     @Nonnull
     public Material get(@Nonnull BlockType blockType) {
-        Objects.requireNonNull(blockType, "blockType");
+        Preconditions.checkNotNull(blockType, "blockType");
         int index = blockType.ordinal();
         Material variation = this.variations[index];
         if (variation == null) {

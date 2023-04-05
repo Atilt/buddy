@@ -22,46 +22,35 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.function;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
-
-import javax.annotation.Nonnull;
 import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import java.util.List;
 
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
+public final class Lists {
 
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
+    @Nonnull
+    public static <T> T previous(@Nonnull List<T> list, @Nonnegative int index) {
+        Preconditions.checkNotNull(list, "list");
+        Preconditions.checkState(!list.isEmpty(), "empty list");
+        Preconditions.checkArgument(index >= 0 && index < list.size(), "index out of range: %s", index);
+        int previousIndex = (index - 1 + list.size()) % list.size();
+        return list.get(previousIndex);
     }
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
+    public static <T> T next(@Nonnull List<T> list, @Nonnegative int index) {
+        Preconditions.checkNotNull(list, "list");
+        Preconditions.checkState(!list.isEmpty(), "empty list");
+        Preconditions.checkArgument(index >= 0 && index < list.size(), "index out of range: %s", index);
+        int next = (index + 1) % list.size();
+        return list.get(next);
     }
 
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    private Lists() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

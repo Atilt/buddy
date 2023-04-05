@@ -22,46 +22,18 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
+import me.atilt.buddy.gui.state.StateHolder;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
-
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
-
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
-    }
+public interface Slot<E extends Event> {
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
+    StateHolder stateHolder();
 
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
-    }
+    @Nonnull
+    Click<E> click();
 }

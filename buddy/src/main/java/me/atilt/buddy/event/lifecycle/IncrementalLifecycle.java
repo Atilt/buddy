@@ -29,7 +29,7 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class IncrementalLifecycle<E extends Event> implements Lifecycle<E> {
@@ -41,7 +41,7 @@ public final class IncrementalLifecycle<E extends Event> implements Lifecycle<E>
     private final AtomicInteger count = new AtomicInteger(0);
 
     public IncrementalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnegative int maxIncrement) {
-        Objects.requireNonNull(expirationPolicy, "terminationStage");
+        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
         this.expirationPolicy = expirationPolicy;
         this.maxIncrement = maxIncrement;
     }

@@ -22,46 +22,24 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
-
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
+package me.atilt.buddy.function;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+public class Functions {
 
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
+    private static final Function EMPTY = none -> null;
 
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
+    public static <T, U> Function<T, U> empty() {
+        return EMPTY;
     }
 
-    @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
+    public static <T, U> boolean empty(@Nonnull Function<T, U> function) {
+        return function == EMPTY;
     }
 
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    private Functions() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

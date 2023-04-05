@@ -22,46 +22,15 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui.chest.item;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
-import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
-
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
-
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
-    }
+public interface ChestItem {
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
-
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
-    }
+    Supplier<ItemStack> bukkitItem();
 }

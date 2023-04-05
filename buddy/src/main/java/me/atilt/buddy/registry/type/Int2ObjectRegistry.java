@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.Set;
 
 /**
@@ -58,18 +58,18 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     private boolean closed;
 
     public Int2ObjectRegistry(@Nonnull Int2ObjectMap<V> handle) {
-        Objects.requireNonNull(handle, "handle");
+        Preconditions.checkNotNull(handle, "handle");
         this.handle = handle;
     }
 
     @Nullable
     public V register(int key, @Nonnull V v) {
-        Objects.requireNonNull(v, "value");
+        Preconditions.checkNotNull(v, "value");
         return this.handle.put(key, v);
     }
 
     public void register(@Nonnull Int2ObjectMap<V> all) {
-        Objects.requireNonNull(all, "all");
+        Preconditions.checkNotNull(all, "all");
         this.handle.putAll(all);
     }
     
@@ -85,7 +85,7 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
 
     @Nonnull
     public V getOrDefault(int key, @Nonnull V v) {
-        Objects.requireNonNull(v, "value");
+        Preconditions.checkNotNull(v, "value");
         return this.handle.getOrDefault(key, v);
     }
 
@@ -98,14 +98,14 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     @Nullable
     @Override
     public V register(@Nonnull Integer key, @Nonnull V v) {
-        Objects.requireNonNull(key, "key");
-        Objects.requireNonNull(v, "value");
+        Preconditions.checkNotNull(key, "key");
+        Preconditions.checkNotNull(v, "value");
         return register(key.intValue(), v);
     }
 
     @Override
     public void register(@Nonnull Map<? extends Integer, ? extends V> all) {
-        Objects.requireNonNull(all, "all");
+        Preconditions.checkNotNull(all, "all");
         this.handle.putAll(all);
     }
 
@@ -113,7 +113,7 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     @Nullable
     @Override
     public V unregister(@Nonnull Integer key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.checkNotNull(key, "key");
         return unregister(key.intValue());
     }
 
@@ -121,7 +121,7 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     @Nullable
     @Override
     public V get(@Nonnull Integer key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.checkNotNull(key, "key");
         return get(key.intValue());
     }
 
@@ -129,8 +129,8 @@ public class Int2ObjectRegistry<V> implements Registry<Integer, V> {
     @Nonnull
     @Override
     public V getOrDefault(@Nonnull Integer key, @Nonnull V v) {
-        Objects.requireNonNull(key, "key");
-        Objects.requireNonNull(v, "value");
+        Preconditions.checkNotNull(key, "key");
+        Preconditions.checkNotNull(v, "value");
         return getOrDefault(key.intValue(), v);
     }
 

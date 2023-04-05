@@ -29,20 +29,20 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 public final class EventManager {
 
     private final Plugin plugin;
 
     public EventManager(@Nonnull Plugin plugin) {
-        Objects.requireNonNull(plugin, "plugin");
+        Preconditions.checkNotNull(plugin, "plugin");
         this.plugin = plugin;
     }
 
     @Nonnull
     public <E extends Event> ObservableEventBuilder<E> observe(@Nonnull Class<E> eventType) {
-        Objects.requireNonNull(eventType, "eventType");
+        Preconditions.checkNotNull(eventType, "eventType");
         return DefaultEventObserver.newBuilder(this.plugin, eventType);
     }
 }

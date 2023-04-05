@@ -22,28 +22,7 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.function;
+package me.atilt.buddy.gui.state;
 
-import javax.annotation.Nonnull;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-public final class Consumers {
-
-    private static final Consumer EMPTY = none -> {};
-    private static final BiConsumer BI_EMPTY = (none, none2) -> {};
-
-    @Nonnull
-    public static Consumer empty() {
-        return EMPTY;
-    }
-
-    @Nonnull
-    public static BiConsumer biEmpty() {
-        return BI_EMPTY;
-    }
-
-    private Consumers() {
-        throw new IllegalStateException("This class cannot be instantiated");
-    }
+public interface State {
 }

@@ -22,46 +22,28 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
+import me.atilt.buddy.function.Consumers;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
+public interface Click<E extends Event> {
 
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
-
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
-    }
+    Click<? extends Event> EMPTY = new Click() {
+        @Nonnull
+        @Override
+        public BiConsumer<Player, ? extends Event> on() {
+            return Consumers.biEmpty();
+        }
+    };
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
-
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
-
-    @Override
-    public void close() {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
-    }
+    BiConsumer<Player, E> on();
 }

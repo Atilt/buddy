@@ -30,7 +30,7 @@ import org.bukkit.World;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 /**
  * Utility for Bukkit's {@link org.bukkit.Location} and {@link World} 3D coordinates.
@@ -64,7 +64,7 @@ public final class Locations {
      * @return the packed long key
      */
     public static long key(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location");
+        Preconditions.checkNotNull(location, "location");
         return key(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 

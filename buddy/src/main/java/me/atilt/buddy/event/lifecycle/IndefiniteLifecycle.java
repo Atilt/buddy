@@ -28,7 +28,7 @@ import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> {
 
@@ -36,7 +36,7 @@ public final class IndefiniteLifecycle<E extends Event> implements Lifecycle<E> 
     private boolean closed;
 
     public IndefiniteLifecycle(@Nonnull ExpirationPolicy expirationPolicy) {
-        Objects.requireNonNull(expirationPolicy, "birthStage");
+        Preconditions.checkNotNull(expirationPolicy, "birthStage");
         this.expirationPolicy = expirationPolicy;
     }
 

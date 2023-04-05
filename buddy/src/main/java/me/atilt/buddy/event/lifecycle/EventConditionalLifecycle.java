@@ -28,7 +28,7 @@ import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.function.Predicate;
 
 public final class EventConditionalLifecycle<E extends Event> implements Lifecycle<E> {
@@ -38,8 +38,8 @@ public final class EventConditionalLifecycle<E extends Event> implements Lifecyc
     private boolean closed;
 
     public EventConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull Predicate<E> condition) {
-        Objects.requireNonNull(expirationPolicy, "terminationStage");
-        Objects.requireNonNull(condition, "condition");
+        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
+        Preconditions.checkNotNull(condition, "condition");
         this.expirationPolicy = expirationPolicy;
         this.condition = condition;
     }

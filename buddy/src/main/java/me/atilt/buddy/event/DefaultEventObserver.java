@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -76,10 +76,10 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
     private final Consumer<E> on;
 
     private DefaultEventObserver(@Nonnull Lifecycle<E> lifecycle, @Nonnull Class<E> eventType, @Nonnull EventPriority priority, @Nonnull List<Predicate<E>> only, @Nonnull Consumer<E> on) {
-        Objects.requireNonNull(lifecycle, "lifecycle");
-        Objects.requireNonNull(eventType, "eventType");
-        Objects.requireNonNull(only, "only");
-        Objects.requireNonNull(on, "on");
+        Preconditions.checkNotNull(lifecycle, "lifecycle");
+        Preconditions.checkNotNull(eventType, "eventType");
+        Preconditions.checkNotNull(only, "only");
+        Preconditions.checkNotNull(on, "on");
         this.lifecycle = lifecycle;
         this.eventType = eventType;
         this.priority = priority;
@@ -89,8 +89,8 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
 
     @Nonnull
     protected static <E extends Event> ObservableEventBuilder<E> newBuilder(@Nonnull Plugin plugin, @Nonnull Class<E> eventType) {
-        Objects.requireNonNull(plugin, "plugin");
-        Objects.requireNonNull(eventType, "eventType");
+        Preconditions.checkNotNull(plugin, "plugin");
+        Preconditions.checkNotNull(eventType, "eventType");
         return new DefaultObservableEventBuilder<>(plugin, eventType);
     }
 
@@ -177,15 +177,14 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
             }
         }
 
+        this.on.accept(found);
+
         if (expirationPolicy.soft()) {
             if (this.lifecycle.test(found)) {
                 this.lifecycle.close();
                 unregisterListener(event, listener);
-                return;
             }
         }
-
-        this.on.accept(found);
     }
 
     private static final class DefaultObservableEventBuilder<E extends Event> implements ObservableEventBuilder<E> {
@@ -199,8 +198,8 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         private Consumer<E> on;
 
         private DefaultObservableEventBuilder(@Nonnull Plugin plugin, @Nonnull Class<E> eventType) {
-            Objects.requireNonNull(plugin, "plugin");
-            Objects.requireNonNull(eventType, "eventType");
+            Preconditions.checkNotNull(plugin, "plugin");
+            Preconditions.checkNotNull(eventType, "eventType");
             this.plugin = plugin;
             this.lifecycle = new IndefiniteLifecycle<>(ExpirationPolicy.HARD);
             this.eventType = eventType;
@@ -211,7 +210,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         @Nonnull
         @Override
         public ObservableEventBuilder<E> lifecycle(@Nonnull Lifecycle<E> lifecycle) {
-            Objects.requireNonNull(lifecycle, "lifecycle");
+            Preconditions.checkNotNull(lifecycle, "lifecycle");
             this.lifecycle = lifecycle;
             return this;
         }
@@ -219,7 +218,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         @Nonnull
         @Override
         public ObservableEventBuilder<E> priority(@Nonnull EventPriority priority) {
-            Objects.requireNonNull(priority, "priority");
+            Preconditions.checkNotNull(priority, "priority");
             this.priority = priority;
             return this;
         }
@@ -227,7 +226,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         @Nonnull
         @Override
         public ObservableEventBuilder<E> only(@Nonnull Predicate<E>... only) {
-            Objects.requireNonNull(only, "only");
+            Preconditions.checkNotNull(only, "only");
             this.only = Arrays.asList(only);
             return this;
         }
@@ -235,7 +234,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         @Nonnull
         @Override
         public ObservableEventBuilder<E> on(@Nonnull Consumer<E> on) {
-            Objects.requireNonNull(on, "on");
+            Preconditions.checkNotNull(on, "on");
             this.on = on;
             return this;
         }
@@ -243,7 +242,7 @@ class DefaultEventObserver<E extends Event> implements ObservableEvent<E>, Event
         @Nonnull
         @Override
         public Builder<ObservableEvent<E>> inherit(@Nonnull ObservableEvent<E> type) {
-            Objects.requireNonNull(type, "type");
+            Preconditions.checkNotNull(type, "type");
             this.lifecycle = type.lifecycle();
             this.eventType = type.eventType();
             this.priority = type.priority();

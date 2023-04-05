@@ -22,46 +22,29 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.event.lifecycle;
+package me.atilt.buddy.gui;
 
-import me.atilt.buddy.event.lifecycle.stage.ExpirationPolicy;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import me.atilt.buddy.closeable.Closeable;
+import me.atilt.buddy.event.EventManager;
+import me.atilt.buddy.pattern.Builder;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nonnull;
-import com.google.common.base.Preconditions;
-import java.util.function.BooleanSupplier;
 
-public final class SuppliedConditionalLifecycle<E extends Event> implements Lifecycle<E> {
-
-    private final ExpirationPolicy expirationPolicy;
-    private final BooleanSupplier condition;
-    private boolean closed;
-
-    public SuppliedConditionalLifecycle(@Nonnull ExpirationPolicy expirationPolicy, @Nonnull BooleanSupplier condition) {
-        Preconditions.checkNotNull(expirationPolicy, "terminationStage");
-        Preconditions.checkNotNull(condition, "condition");
-        this.expirationPolicy = expirationPolicy;
-        this.condition = condition;
-    }
+public interface Gui<S extends Slot<? extends Event>> extends Builder<Gui<S>>, Closeable {
 
     @Nonnull
-    @Override
-    public ExpirationPolicy expirationPolicy() {
-        return this.expirationPolicy;
-    }
+    String title();
 
-    @Override
-    public boolean test(E event) {
-        return this.condition.getAsBoolean();
-    }
+    @Nonnull
+    Interaction interaction();
 
-    @Override
-    public void close() {
-        this.closed = true;
-    }
+    @Nonnull
+    Int2ObjectMap<S> slots();
 
-    @Override
-    public boolean closed() {
-        return this.closed;
-    }
+    void open(@Nonnull Player player);
+
+    void register(@Nonnull EventManager eventManager);
 }

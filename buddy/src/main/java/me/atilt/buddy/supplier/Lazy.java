@@ -25,7 +25,7 @@
 package me.atilt.buddy.supplier;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 import java.util.function.Supplier;
 
 /**
@@ -45,12 +45,12 @@ public final class Lazy<L> implements Supplier<L> {
     private L value;
 
     private Lazy(@Nonnull Supplier<L> handle) {
-        Objects.requireNonNull(handle, "handle");
+        Preconditions.checkNotNull(handle, "handle");
         this.handle = handle;
     }
 
     public static <L> Lazy<L> of(@Nonnull Supplier<L> handle) {
-        Objects.requireNonNull(handle, "handle");
+        Preconditions.checkNotNull(handle, "handle");
         return new Lazy<>(handle);
     }
 
