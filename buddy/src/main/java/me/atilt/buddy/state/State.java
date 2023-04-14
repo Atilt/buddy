@@ -22,18 +22,31 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui;
+package me.atilt.buddy.state;
 
-import me.atilt.buddy.gui.state.StateHolder;
-import org.bukkit.event.Event;
+import me.atilt.buddy.closeable.Closeable;
 
-import javax.annotation.Nonnull;
+/**
+ * Represents a state component of a
+ * state machine.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ */
+public interface State extends Closeable {
 
-public interface Slot<E extends Event> {
+    boolean started();
 
-    @Nonnull
-    StateHolder stateHolder();
+    boolean updating();
 
-    @Nonnull
-    Click<E> click();
+    boolean completed();
+
+    void start();
+
+    void complete();
+
+    void update();
+
+    void reset();
 }

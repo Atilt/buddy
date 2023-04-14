@@ -22,15 +22,41 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui.chest.item;
+package me.atilt.buddy;
 
-import org.bukkit.inventory.ItemStack;
+import javax.annotation.Nonnegative;
+import javax.annotation.Nullable;
 
-import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+/**
+ * Represents an index which can be tracked
+ * and focused on. Used in {@link me.atilt.buddy.util.FocusList}
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ *
+ * @param <F> the type
+ */
+public interface FocusIndex<F> {
 
-public interface ChestItem {
+    /**
+     * The current index being focused
+     *
+     * @since 1.0.0
+     *
+     * @return the index
+     */
+    @Nonnegative
+    int focused();
 
-    @Nonnull
-    Supplier<ItemStack> bukkitItem();
+    /**
+     * The index to switch focus towards.
+     *
+     * @since 1.0.0
+     *
+     * @param index the index
+     * @return the value at the specified index
+     */
+    @Nullable
+    F focus(@Nonnegative int index);
 }

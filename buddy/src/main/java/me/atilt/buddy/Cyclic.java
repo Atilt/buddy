@@ -26,7 +26,21 @@ package me.atilt.buddy;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents the ability to have a cyclical
+ * form. Can be used to get the current, previous, and next
+ * object in a cycle.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ *
+ * @param <C> the type
+ */
 public interface Cyclic<C> {
+
+    @Nonnull
+    C current();
 
     @Nonnull
     C previous();

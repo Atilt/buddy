@@ -22,36 +22,40 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui.chest;
-
-import me.atilt.buddy.function.Consumers;
-import me.atilt.buddy.gui.Click;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
+package me.atilt.buddy.state;
 
 import javax.annotation.Nonnull;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
 
-public final class InventoryClick implements Click<InventoryClickEvent> {
+public final class StateFlow extends StateFocus {
 
-    private static final InventoryClick EMPTY = new InventoryClick(Consumers.biEmpty());
+    private boolean updating;
 
-    private final BiConsumer<Player, InventoryClickEvent> on;
-
-    public InventoryClick(@Nonnull BiConsumer<Player, InventoryClickEvent> on) {
-        this.on = on;
+    public StateFlow(@Nonnull Collection<State> states) {
+        super(states);
     }
 
-    @Nonnull
-    public static InventoryClick empty() {
-        return EMPTY;
-    }
-
-    @Nonnull
     @Override
-    public BiConsumer<Player, InventoryClickEvent> on() {
-        return this.on;
+    public boolean updating() {
+        return super.updating() || this.updating;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if (completed()) {
+            return;
+        }
+        State current = current();
+        if (current.completed()) {
+            this.updating = true;
+
+            State focus = focus(focused() + 1);
+            focus.start();
+
+            this.updating = false;
+        }
     }
 }

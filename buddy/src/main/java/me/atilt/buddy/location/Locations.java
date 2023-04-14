@@ -24,7 +24,6 @@
 
 package me.atilt.buddy.location;
 
-import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.World;
 

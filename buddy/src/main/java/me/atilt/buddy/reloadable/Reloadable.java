@@ -26,7 +26,7 @@ package me.atilt.buddy.reloadable;
 
 /**
  * Represents an object that can have its
- * state reloaded.
+ * context reloaded.
  *
  * @since 1.0.0
  * @version 1.0.0

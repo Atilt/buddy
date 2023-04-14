@@ -26,6 +26,13 @@ package me.atilt.buddy;
 
 import me.atilt.buddy.closeable.Closeable;
 
+/**
+ * Represents an object which can be observed.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ */
 public interface Observable extends Closeable {
 
 

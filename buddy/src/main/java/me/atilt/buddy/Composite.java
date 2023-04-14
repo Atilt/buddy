@@ -22,7 +22,51 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui.state;
+package me.atilt.buddy;
 
-public interface State {
+import me.atilt.buddy.closeable.Closeable;
+
+import javax.annotation.Nonnull;
+import java.util.Collection;
+
+/**
+ * Represents a composite of objects. A composite should
+ * extend its compositing type. Capable of latching or binding
+ * items to itself.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ *
+ * @param <C> the type
+ */
+public interface Composite<C> extends Iterable<C>, Closeable {
+
+    /**
+     * An immutable view of the objects latched onto the composite.
+     *
+     * @since 1.0.0
+     *
+     * @return the objects
+     */
+    @Nonnull
+    Collection<C> latches();
+
+    /**
+     * Latches an object onto the composite.
+     *
+     * @since 1.0.0
+     *
+     * @param composite the object
+     */
+    void latch(@Nonnull C composite);
+
+    /**
+     * Latches a {@link Collection<C>} of objects of the same type onto the composite.
+     *
+     * @since 1.0.0
+     *
+     * @param composites the collection
+     */
+    void latchAll(@Nonnull Collection<C> composites);
 }

@@ -22,28 +22,53 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui;
+package me.atilt.buddy.state;
 
-import me.atilt.buddy.function.Consumers;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryClickEvent;
+public abstract class DefaultState implements State {
 
-import javax.annotation.Nonnull;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
+    private boolean closed;
+    private boolean started;
+    private boolean updating;
 
-public interface Click<E extends Event> {
+    @Override
+    public boolean started() {
+        return this.started;
+    }
 
-    Click<? extends Event> EMPTY = new Click() {
-        @Nonnull
-        @Override
-        public BiConsumer<Player, ? extends Event> on() {
-            return Consumers.biEmpty();
-        }
-    };
+    @Override
+    public boolean updating() {
+        return this.updating;
+    }
 
-    @Nonnull
-    BiConsumer<Player, E> on();
+    @Override
+    public void start() {
+        this.started = true;
+    }
+
+    @Override
+    public void complete() {
+        this.updating = false;
+    }
+
+    @Override
+    public void update() {
+        this.updating = true;
+    }
+
+    @Override
+    public void reset() {
+        this.started = false;
+        this.closed = false;
+        this.updating = false;
+    }
+
+    @Override
+    public void close() {
+        this.closed = true;
+    }
+
+    @Override
+    public boolean closed() {
+        return this.closed;
+    }
 }

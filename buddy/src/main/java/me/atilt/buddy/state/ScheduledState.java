@@ -22,29 +22,34 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.gui;
-
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.EventManager;
-import me.atilt.buddy.pattern.Builder;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+package me.atilt.buddy.state;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
+import java.time.Instant;
 
-public interface Gui<S extends Slot<? extends Event>> extends Builder<Gui<S>>, Closeable {
+public abstract class ScheduledState extends DefaultState {
+
+    private Instant start;
+    private final Duration duration;
+
+    public ScheduledState(@Nonnull Duration duration) {
+        this.duration = duration;
+    }
 
     @Nonnull
-    String title();
+    public Duration duration() {
+        return this.duration;
+    }
 
-    @Nonnull
-    Interaction interaction();
+    @Override
+    public void start() {
+        super.start();
+        this.start = Instant.now();
+    }
 
-    @Nonnull
-    Int2ObjectMap<S> slots();
-
-    void open(@Nonnull Player player);
-
-    void register(@Nonnull EventManager eventManager);
+    @Override
+    public boolean completed() {
+        return started() && Instant.now().isAfter(this.start.plus(this.duration));
+    }
 }

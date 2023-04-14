@@ -31,7 +31,7 @@ public class Functions {
 
     private static final Function EMPTY = none -> null;
 
-    public static <T, U> Function<T, U> empty() {
+    public static <T, U> Function empty() {
         return EMPTY;
     }
 
