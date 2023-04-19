@@ -24,11 +24,20 @@
 
 package me.atilt.buddy.state;
 
+import me.atilt.buddy.Composite;
+
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class CursoredStateFlow extends CursoredState {
+/**
+ * Represents a {@link Composite <State>}. Allows for cursor positioning
+ * of states with native order enforcement.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ */
+public final class CursoredStateFlow extends CursoredState {
 
     public CursoredStateFlow(@Nonnull Collection<State> states) {
         super(states);

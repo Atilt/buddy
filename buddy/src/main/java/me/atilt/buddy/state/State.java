@@ -36,17 +36,58 @@ import me.atilt.buddy.closeable.Closeable;
  */
 public interface State extends Closeable {
 
+    /**
+     * Determines if the state has been started.
+     *
+     * @since 1.0.0
+     *
+     * @return true if the state has been started
+     */
     boolean started();
 
+    /**
+     * Determines if the state is currently updating.
+     *
+     * @since 1.0.0
+     *
+     * @return true if the state is currently updating.
+     */
     boolean updating();
 
+    /**
+     * Determines if the state is completed.
+     *
+     * @since 1.0.0
+     *
+     * @return true if the state is completed.
+     */
     boolean completed();
 
+    /**
+     * Starts the current state.
+     *
+     * @since 1.0.0
+     */
     void start();
 
+    /**
+     * Completes the current state.
+     *
+     * @since 1.0.0
+     */
     void complete();
 
+    /**
+     * Updates the current state.
+     *
+     * @since 1.0.0
+     */
     void update();
 
+    /**
+     * Resets the current state to its default condition.
+     *
+     * @since 1.0.0
+     */
     void reset();
 }

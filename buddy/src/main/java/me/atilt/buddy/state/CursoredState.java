@@ -26,7 +26,6 @@ package me.atilt.buddy.state;
 
 import com.google.common.base.Preconditions;
 import me.atilt.buddy.Composite;
-import me.atilt.buddy.FocusIndex;
 import me.atilt.buddy.state.exception.StateOperationException;
 import me.atilt.buddy.util.CursorList;
 import me.atilt.buddy.util.Iterators;
@@ -34,12 +33,18 @@ import me.atilt.buddy.util.Iterators;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
+/**
+ * Represents a {@link Composite<State>}. Allows for cursor positioning
+ * of states without order enforcement.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author Atilt
+ */
 public class CursoredState extends DefaultState implements Composite<State> {
 
     private boolean completed;
@@ -52,7 +57,12 @@ public class CursoredState extends DefaultState implements Composite<State> {
     }
 
     protected boolean completedAll() {
-        return this.states.allMatch(state -> state.started() && state.completed());
+        for (State state : this.states) {
+            if (!state.started() || !state.completed()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void validate(@Nonnull Status status, boolean expected) {
@@ -171,6 +181,7 @@ public class CursoredState extends DefaultState implements Composite<State> {
                 state.complete();
             }
         }
+        this.states.cursor(size() - 1);
         super.complete();
     }
 
