@@ -26,6 +26,7 @@ package me.atilt.buddy;
 
 import me.atilt.buddy.closeable.Closeable;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 
@@ -53,20 +54,31 @@ public interface Composite<C> extends Iterable<C>, Closeable {
     Collection<C> latches();
 
     /**
-     * Latches an object onto the composite.
+     * The size of the composite represented by
+     * the total number of object latches
      *
      * @since 1.0.0
      *
-     * @param composite the object
+     * @return the size the composite
      */
-    void latch(@Nonnull C composite);
+    @Nonnegative
+    int size();
+
+    /**
+     * Latches an object onto the composite.
+     *
+     * @param composite the object
+     * @return whether the latching was successful or not.
+     */
+    boolean latch(@Nonnull C composite);
 
     /**
      * Latches a {@link Collection<C>} of objects of the same type onto the composite.
      *
      * @since 1.0.0
      *
-     * @param composites the collection
+     * @param composites the collection of objects
+     * @return the objects which weren't successfully latched.
      */
-    void latchAll(@Nonnull Collection<C> composites);
+    Collection<C> latchAll(@Nonnull Collection<C> composites);
 }

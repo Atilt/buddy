@@ -28,12 +28,12 @@ import javax.annotation.Nonnull;
 import java.time.Duration;
 import java.time.Instant;
 
-public abstract class ScheduledState extends DefaultState {
+public abstract class TimedState extends DefaultState {
 
     private Instant start;
     private final Duration duration;
 
-    public ScheduledState(@Nonnull Duration duration) {
+    public TimedState(@Nonnull Duration duration) {
         this.duration = duration;
     }
 

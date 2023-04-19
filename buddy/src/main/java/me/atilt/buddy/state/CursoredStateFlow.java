@@ -24,58 +24,41 @@
 
 package me.atilt.buddy.state;
 
-public abstract class DefaultState implements State {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collection;
 
-    private boolean closed;
-    private boolean started;
-    private boolean updating;
-    private boolean completed;
+public class CursoredStateFlow extends CursoredState {
 
-    @Override
-    public boolean started() {
-        return this.started;
+    public CursoredStateFlow(@Nonnull Collection<State> states) {
+        super(states);
     }
 
+    @Nonnull
     @Override
-    public boolean updating() {
-        return this.updating;
-    }
+    public State cursor(int cursor) {
+        validate(Status.STARTED, true);
+        validate(Status.CLOSED, false);
 
-    @Override
-    public boolean completed() {
-        return this.completed;
-    }
+        State cursored = super.cursor(cursor);
 
-    @Override
-    public void start() {
-        this.started = true;
-    }
-
-    @Override
-    public void complete() {
-        this.updating = false;
-        this.completed = true;
+        for (int remaining = cursor + 1; remaining < size(); remaining++) {
+            State state = get(remaining);
+            state.reset();
+        }
+        return cursored;
     }
 
     @Override
     public void update() {
-        this.updating = true;
-    }
-
-    @Override
-    public void reset() {
-        this.started = false;
-        this.closed = false;
-        this.updating = false;
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+        super.update();
+        if (completed()) {
+            return;
+        }
+        State current = state();
+        if (current.completed()) {
+            State focus = cursor(cursor() + 1);
+            focus.start();
+        }
     }
 }

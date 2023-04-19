@@ -22,60 +22,13 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.state;
+package me.atilt.buddy.state.exception;
 
-public abstract class DefaultState implements State {
+public class StateOperationException extends RuntimeException {
 
-    private boolean closed;
-    private boolean started;
-    private boolean updating;
-    private boolean completed;
+    private static final long serialVersionUID = -1057504456788799585L;
 
-    @Override
-    public boolean started() {
-        return this.started;
-    }
-
-    @Override
-    public boolean updating() {
-        return this.updating;
-    }
-
-    @Override
-    public boolean completed() {
-        return this.completed;
-    }
-
-    @Override
-    public void start() {
-        this.started = true;
-    }
-
-    @Override
-    public void complete() {
-        this.updating = false;
-        this.completed = true;
-    }
-
-    @Override
-    public void update() {
-        this.updating = true;
-    }
-
-    @Override
-    public void reset() {
-        this.started = false;
-        this.closed = false;
-        this.updating = false;
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.closed = true;
-    }
-
-    @Override
-    public boolean closed() {
-        return this.closed;
+    public StateOperationException(String message) {
+        super(message);
     }
 }

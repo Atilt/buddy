@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.function.Consumer;
 
 public final class Iterators {
@@ -43,6 +44,15 @@ public final class Iterators {
     public static <T> Iterator<T> unmodifiable(@Nonnull Collection<T> collection) {
         Preconditions.checkNotNull(collection, "collection");
         return unmodifiable(collection.iterator());
+    }
+
+    @Nonnull
+    public static Iterator empty() {
+        return EmptyIterator.EMPTY;
+    }
+
+    public static ListIterator emptyList() {
+        return EmptyListIterator.EMPTY;
     }
 
     private Iterators() {
@@ -75,6 +85,71 @@ public final class Iterators {
         @Override
         public void forEachRemaining(Consumer<? super T> action) {
             this.iterator.forEachRemaining(action);
+        }
+    }
+
+    private static final class EmptyIterator<T> implements Iterator<T> {
+
+        static Iterator EMPTY = new EmptyIterator();
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public T next() {
+            return null;
+        }
+    }
+
+    private static final class EmptyListIterator<T> implements ListIterator<T> {
+
+        static ListIterator EMPTY = new EmptyListIterator();
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public T next() {
+            return null;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return false;
+        }
+
+        @Override
+        public T previous() {
+            return null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void set(T t) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void add(T t) {
+            throw new UnsupportedOperationException();
         }
     }
 }

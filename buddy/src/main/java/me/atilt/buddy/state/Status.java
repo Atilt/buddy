@@ -24,38 +24,13 @@
 
 package me.atilt.buddy.state;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
+public enum Status {
 
-public final class StateFlow extends StateFocus {
+    STARTED,
 
-    private boolean updating;
+    CLOSED,
 
-    public StateFlow(@Nonnull Collection<State> states) {
-        super(states);
-    }
+    COMPLETED,
 
-    @Override
-    public boolean updating() {
-        return super.updating() || this.updating;
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        if (completed()) {
-            return;
-        }
-        State current = current();
-        if (current.completed()) {
-            this.updating = true;
-
-            State focus = focus(focused() + 1);
-            focus.start();
-
-            this.updating = false;
-        }
-    }
+    UPDATING,
 }
