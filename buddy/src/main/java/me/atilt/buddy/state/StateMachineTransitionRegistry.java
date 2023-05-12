@@ -22,24 +22,36 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.state;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import me.atilt.buddy.state.trigger.TriggerKey;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public final class StateMachineTransitionRegistry<T extends State> implements TransitionRegistry<T> {
+
+    private final Map<TriggerKey, Transition<T>> transitions;
+
+    public StateMachineTransitionRegistry(@NonNull Map<TriggerKey, Transition<T>> transitions) {
+        this.transitions = new HashMap<>(transitions);
+    }
+
+    @NonNull
+    @Override
+    public Map<TriggerKey, Transition<T>> asMap() {
+        return Collections.unmodifiableMap(this.transitions);
+    }
+
+    @Override
+    public Transition<T> apply(TriggerKey triggerKey) {
+        Transition<T> transition = this.transitions.get(triggerKey);
+        if (transition == null) {
+            return null;
+        }
+        return transition;
+    }
 }

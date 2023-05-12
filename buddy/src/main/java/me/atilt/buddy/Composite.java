@@ -22,24 +22,43 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy;
+
+import me.atilt.buddy.closeable.Closeable;
+
+import javax.annotation.Nonnegative;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Collection;
 
 /**
- * Represents an object that can have its
- * context reloaded.
+ * Represents a composite of objects. A composite should
+ * extend its compositing type. Capable of latching or binding
+ * items to itself.
  *
  * @since 1.0.0
  * @version 1.0.0
  * @author Atilt
+ *
+ * @param <C> the type
  */
-public interface Reloadable {
+public interface Composite<C> extends Iterable<C>, Closeable {
 
     /**
-     * Reloads the objects state.
+     * The size of the composite represented by
+     * the total number of object latches
      *
      * @since 1.0.0
      *
-     * @return if the reload was successful.
+     * @return the size the composite
      */
-    boolean reload();
+    @Nonnegative
+    int size();
+
+    /**
+     * Latches an object onto the composite.
+     *
+     * @param composites the object
+     * @return whether the latching was successful or not.
+     */
+    boolean latch(@NonNull C... composites);
 }

@@ -22,24 +22,35 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.state.trigger;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Objects;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+public final class TransitionTrigger<T> implements Trigger<T> {
+
+    private final TriggerKey triggerKey;
+
+    public TransitionTrigger(TriggerKey triggerKey) {
+        this.triggerKey = triggerKey;
+    }
+
+    @NonNull
+    @Override
+    public TriggerKey key() {
+        return this.triggerKey;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransitionTrigger)) return false;
+        TransitionTrigger<?> that = (TransitionTrigger<?>) o;
+        return triggerKey.equals(that.triggerKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(triggerKey);
+    }
 }

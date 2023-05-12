@@ -24,13 +24,12 @@
 
 package me.atilt.buddy.location;
 
-import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import java.util.Objects;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import com.google.common.base.Preconditions;
 
 /**
  * Utility for Bukkit's {@link org.bukkit.Location} and {@link World} 3D coordinates.
@@ -63,8 +62,8 @@ public final class Locations {
      * @param location the {@link World} location
      * @return the packed long key
      */
-    public static long key(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location");
+    public static long key(@NonNull Location location) {
+        Preconditions.checkNotNull(location, "location");
         return key(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
@@ -77,7 +76,7 @@ public final class Locations {
      * @param combined the long key
      * @return the long key's location
      */
-    public static Location keyLocation(@Nonnull World world, @Nonnegative long combined) {
+    public static Location keyLocation(@NonNull World world, @Nonnegative long combined) {
         Preconditions.checkArgument(combined >= 0, "invalid range: %s", combined);
         int x = keyX(combined);
         int y = keyY(combined);

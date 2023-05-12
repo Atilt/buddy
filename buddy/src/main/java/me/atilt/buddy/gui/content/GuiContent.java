@@ -22,47 +22,65 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
+package me.atilt.buddy.gui.content;
 
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import me.atilt.buddy.gui.content.slot.Slot;
+import me.atilt.buddy.gui.content.slot.SlotContent;
+import me.atilt.buddy.state.State;
 
+import javax.annotation.Nonnegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Arrays;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public class GuiContent implements Content<Slot[]> {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private final Slot[] raw;
+
+    public GuiContent(@NonNull Slot[] raw) {
+        this.raw = raw;
+    }
+
+    @Nonnegative
+    public int size() {
+        return this.raw.length;
+    }
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    @Override
+    public Slot[] raw() {
+        return this.raw;
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
-    @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public boolean enter() {
+        return true;
+    }
+
+    @Override
+    public boolean update() {
+        return false;
+    }
+
+    @Override
+    public boolean exit() {
+        return true;
+    }
+
+    @Override
+    public <T extends State> T self() {
+        return (T) this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GuiContent)) return false;
+        GuiContent that = (GuiContent) o;
+        return Arrays.equals(raw, that.raw);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(raw);
+    }
 }

@@ -22,24 +22,26 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.event;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import java.util.function.IntSupplier;
+
+@FunctionalInterface
+public interface Execution extends IntSupplier, Comparable<Execution> {
+
+    Execution LAST = () -> 1000;
+    Execution INTERMEDIATE = () -> 0;
+    Execution FIRST = () -> -1000;
+
+    @Override
+    default int compareTo(Execution other) {
+        return Integer.compare(getAsInt(), other.getAsInt());
+    }
+
+    @NonNull
+    default Execution offset(int offset) {
+        return () -> getAsInt() + offset;
+    }
 }

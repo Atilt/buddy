@@ -24,7 +24,7 @@
 
 package me.atilt.buddy.pattern;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Provides building pattern access to objects as
@@ -47,8 +47,8 @@ public interface Builder<B> {
      * @param type the type of buildable object
      * @return the builder
      */
-    @Nonnull
-    Builder<B> inherit(@Nonnull B type);
+    @NonNull
+    Builder<B> inherit(@NonNull B type);
 
     /**
      * Builds the object
@@ -57,6 +57,6 @@ public interface Builder<B> {
      *
      * @return the object to build
      */
-    @Nonnull
+    @NonNull
     B build();
 }

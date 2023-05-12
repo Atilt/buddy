@@ -22,24 +22,16 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.gui.content.slot;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import me.atilt.buddy.state.TransitionRegistryBuilder;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.function.Function;
+
+public class EmptySlot extends GuiSlot {
+
+    public EmptySlot(int index) {
+        super(new EmptySlotContent(), slotContent -> new TransitionRegistryBuilder<>());
+    }
 }

@@ -22,24 +22,17 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.state.trigger;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+public interface TriggerKey {
+
+    @NonNull
+    static TriggerKey of(@NonNull String domain) {
+        return new StateTriggerKey(domain);
+    }
+
+    @NonNull
+    String domain();
 }

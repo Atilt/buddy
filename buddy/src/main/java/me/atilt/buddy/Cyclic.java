@@ -22,24 +22,29 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * Represents an object that can have its
- * context reloaded.
+ * Represents the ability to have a cyclical
+ * form. Can be used to get the current, previous, and next
+ * object in a cycle.
  *
  * @since 1.0.0
  * @version 1.0.0
  * @author Atilt
+ *
+ * @param <C> the type
  */
-public interface Reloadable {
+public interface Cyclic<C> {
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+    @NonNull
+    C current();
+
+    @NonNull
+    C previous();
+
+    @NonNull
+    C next();
 }

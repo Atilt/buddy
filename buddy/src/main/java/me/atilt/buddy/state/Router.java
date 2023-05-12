@@ -22,24 +22,19 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.state;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.function.Predicate;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+public interface Router<T extends State, U extends State> extends State {
+
+    @NonNull
+    T attempt();
+
+    @NonNull
+    U fallback();
+
+    @NonNull
+    Predicate<T> condition();
 }

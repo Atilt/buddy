@@ -22,24 +22,20 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.gui.content.slot;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import me.atilt.buddy.gui.content.Content;
+import me.atilt.buddy.gui.slot.Click;
+import me.atilt.buddy.state.State;
+import org.bukkit.inventory.ItemStack;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+public interface SlotContent extends Content<SlotContent> {
+
+    @NonNull
+    ItemStack item();
+
+    @NonNull
+    Click click();
 }

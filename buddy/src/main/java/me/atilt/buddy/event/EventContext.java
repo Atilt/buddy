@@ -22,24 +22,41 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.event;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public interface EventContext<E> {
+
+    @NonNull
+    E published();
+
+    default Map<String, Object> properties() {
+        return Collections.emptyMap();
+    }
+
+    class DefaultEventContext<E> implements EventContext<E> {
+
+        private final E published;
+        private final Map<String, Object> properties;
+
+        public DefaultEventContext(E published, Map<String, Object> properties) {
+            this.published = published;
+            this.properties = properties;
+        }
+
+        @Override
+        public @NonNull E published() {
+            return this.published;
+        }
+
+        @Override
+        public Map<String, Object> properties() {
+            return this.properties;
+        }
+    }
 }

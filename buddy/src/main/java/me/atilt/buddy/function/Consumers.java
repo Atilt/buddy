@@ -24,16 +24,23 @@
 
 package me.atilt.buddy.function;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public final class Consumers {
 
     private static final Consumer EMPTY = none -> {};
+    private static final BiConsumer BI_EMPTY = (none, none2) -> {};
 
-    @Nonnull
+    @NonNull
     public static Consumer empty() {
         return EMPTY;
+    }
+
+    @NonNull
+    public static BiConsumer biEmpty() {
+        return BI_EMPTY;
     }
 
     private Consumers() {

@@ -24,7 +24,8 @@
 
 package me.atilt.buddy.supplier;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -44,13 +45,11 @@ public final class Lazy<L> implements Supplier<L> {
     private final Supplier<L> handle;
     private L value;
 
-    private Lazy(@Nonnull Supplier<L> handle) {
-        Objects.requireNonNull(handle, "handle");
+    private Lazy(@NonNull Supplier<L> handle) {
         this.handle = handle;
     }
 
-    public static <L> Lazy<L> of(@Nonnull Supplier<L> handle) {
-        Objects.requireNonNull(handle, "handle");
+    public static <L> Lazy<L> of(@NonNull Supplier<L> handle) {
         return new Lazy<>(handle);
     }
 
@@ -63,21 +62,34 @@ public final class Lazy<L> implements Supplier<L> {
      *
      * @return the original supplier
      */
-    @Nonnull
+    @NonNull
     public Supplier<L> handle() {
         return this.handle;
     }
 
     /**
-     * The lazy is set to be empty if the value of
-     * the underlying supplier has not yet been cached.
+     * Determines if the cached value has been evaluated
+     * or generated.
      *
      * @since 1.0.0
      *
-     * @return if the cached value is present
+     * @return true if the cached value is present
      */
-    public boolean empty() {
-        return this.value == null;
+    public boolean evaluated() {
+        return this.value != null;
+    }
+
+    /**
+     * Returns the cached value or null if it has not yet
+     * been evaluated. No evaluation is performed.
+     *
+     * @since 1.0.0
+     *
+     * @return the cached value
+     */
+    @Nullable
+    public L nullable() {
+        return this.value;
     }
 
     /**
@@ -93,6 +105,19 @@ public final class Lazy<L> implements Supplier<L> {
         if (this.value == null) {
             this.value = this.handle.get();
         }
-        return value;
+        return this.value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lazy)) return false;
+        Lazy<?> lazy = (Lazy<?>) o;
+        return Objects.equals(this.value, lazy.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.value);
     }
 }

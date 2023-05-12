@@ -22,24 +22,42 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.state.trigger;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Objects;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+class StateTriggerKey implements TriggerKey {
+
+    private final String domain;
+
+    StateTriggerKey(String domain) {
+        this.domain = domain;
+    }
+
+    @NonNull
+    @Override
+    public String domain() {
+        return this.domain;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof StateTriggerKey)) return false;
+        StateTriggerKey that = (StateTriggerKey) other;
+        return this.domain.equalsIgnoreCase(that.domain());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.domain);
+    }
+
+    @Override
+    public String toString() {
+        return "StateTriggerKey{" +
+                "domain='" + this.domain + '\'' +
+                '}';
+    }
 }

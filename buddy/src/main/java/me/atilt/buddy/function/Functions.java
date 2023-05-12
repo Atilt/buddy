@@ -22,24 +22,24 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.function;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.function.Function;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+public class Functions {
+
+    private static final Function EMPTY = none -> null;
+
+    public static <T, U> Function empty() {
+        return EMPTY;
+    }
+
+    public static <T, U> boolean empty(@NonNull Function<T, U> function) {
+        return function == EMPTY;
+    }
+
+    private Functions() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
+    }
 }

@@ -22,24 +22,43 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.gui.content;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import me.atilt.buddy.gui.content.slot.Slot;
+import me.atilt.buddy.pattern.Builder;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class GuiContentBuilder implements Builder<GuiContent> {
+
+    private final List<Slot> slots = new ArrayList<>();
+
+    @NonNull
+    public GuiContentBuilder content(@NonNull Slot slot) {
+        this.slots.add(slot);
+        return this;
+    }
+
+    @NonNull
+    public GuiContentBuilder content(@NonNull Slot... slots) {
+        Collections.addAll(this.slots, slots);
+        return this;
+    }
+
+    @NonNull
+    @Override
+    public Builder<GuiContent> inherit(@NonNull GuiContent type) {
+        this.slots.addAll(Arrays.asList(type.raw()));
+        return this;
+    }
+
+    @NonNull
+    @Override
+    public GuiContent build() {
+        return new GuiContent(this.slots.toArray(new Slot[0]));
+    }
 }

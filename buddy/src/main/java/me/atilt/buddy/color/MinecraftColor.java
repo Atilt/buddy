@@ -26,9 +26,9 @@ package me.atilt.buddy.color;
 
 import org.bukkit.Material;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import java.awt.Color;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
 
 /**
  * Associates {@link Color} to Minecraft's in-game
@@ -62,18 +62,18 @@ public enum MinecraftColor {
     private final Color color;
     private final Material[] variations = new Material[BlockType.TYPES.length];
 
-    MinecraftColor(@Nonnull Color color) {
+    MinecraftColor(@NonNull Color color) {
         this.color = color;
     }
 
-    @Nonnull
+    @NonNull
     public Color java() {
         return this.color;
     }
 
-    @Nonnull
-    public Material get(@Nonnull BlockType blockType) {
-        Objects.requireNonNull(blockType, "blockType");
+    @NonNull
+    public Material get(@NonNull BlockType blockType) {
+        Preconditions.checkNotNull(blockType, "blockType");
         int index = blockType.ordinal();
         Material variation = this.variations[index];
         if (variation == null) {

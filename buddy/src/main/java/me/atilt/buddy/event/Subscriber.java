@@ -22,24 +22,18 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.event;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import org.bukkit.event.Event;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import java.util.function.Predicate;
+
+public interface Subscriber<E> {
+
+    void subscribe(@NonNull Subscription<? extends E> subscription);
+
+    <T extends E> Predicate<T> filter();
+
+    <T extends E> void publish(@NonNull T event);
 }

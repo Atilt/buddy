@@ -22,24 +22,22 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.reloadable;
+package me.atilt.buddy.gui;
 
-/**
- * Represents an object that can have its
- * context reloaded.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface Reloadable {
+import me.atilt.buddy.closeable.Closeable;
+import me.atilt.buddy.gui.content.GuiContent;
+import me.atilt.buddy.state.StateMachine;
+import org.bukkit.entity.Player;
 
-    /**
-     * Reloads the objects state.
-     *
-     * @since 1.0.0
-     *
-     * @return if the reload was successful.
-     */
-    boolean reload();
+import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+
+public interface Gui extends StateMachine<GuiContent>, Closeable {
+
+    @Nullable
+    Player viewer();
+
+    void construct();
+
+    boolean open(@NonNull Player player);
 }
