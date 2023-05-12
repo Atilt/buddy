@@ -22,28 +22,15 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.function;
+package me.atilt.buddy.gui.content.slot;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import me.atilt.buddy.state.StateMachine;
 
-public final class Consumers {
+import javax.annotation.Nonnegative;
 
-    private static final Consumer EMPTY = none -> {};
-    private static final BiConsumer BI_EMPTY = (none, none2) -> {};
+public interface Slot extends StateMachine<SlotContent> {
 
-    @NonNull
-    public static Consumer empty() {
-        return EMPTY;
-    }
-
-    @NonNull
-    public static BiConsumer biEmpty() {
-        return BI_EMPTY;
-    }
-
-    private Consumers() {
-        throw new IllegalStateException("This class cannot be instantiated");
+    static GuiSlot.GuiSlotBuilder newBuilder() {
+        return new GuiSlot.GuiSlotBuilder();
     }
 }

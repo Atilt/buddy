@@ -24,7 +24,7 @@
 
 package me.atilt.buddy;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Represents the ability to have a cyclical
@@ -39,12 +39,12 @@ import javax.annotation.Nonnull;
  */
 public interface Cyclic<C> {
 
-    @Nonnull
+    @NonNull
     C current();
 
-    @Nonnull
+    @NonNull
     C previous();
 
-    @Nonnull
+    @NonNull
     C next();
 }

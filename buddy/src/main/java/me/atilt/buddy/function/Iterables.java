@@ -25,21 +25,46 @@
 package me.atilt.buddy.function;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-public class Functions {
+public final class Iterables {
 
-    private static final Function EMPTY = none -> null;
-
-    public static <T, U> Function empty() {
-        return EMPTY;
+    @NonNull
+    public static <T extends Map<K, V>, K, V> T toMap(@NonNull Iterable<V> iterable, @NonNull Function<V, K> mapper, @NonNull Supplier<T> destination) {
+        T map = destination.get();
+        for (V value : iterable) {
+            K key = mapper.apply(value);
+            map.put(key, value);
+        }
+        return map;
     }
 
-    public static <T, U> boolean empty(@NonNull Function<T, U> function) {
-        return function == EMPTY;
+    @NonNull
+    public static <T extends Map<K, V>, K, V> T toMap(@NonNull V[] array, @NonNull Function<V, K> mapper, @NonNull Supplier<T> destination) {
+        T map = destination.get();
+        for (V value : array) {
+            K key = mapper.apply(value);
+            map.put(key, value);
+        }
+        return map;
     }
 
-    private Functions() {
+    @NonNull
+    public static <T extends Collection<V>, K, V> T transform(@NonNull K[] array, @NonNull Function<K, V> mapper, @NonNull Supplier<T> destination) {
+        T collection = destination.get();
+        for (K k : array) {
+            V value = mapper.apply(k);
+            collection.add(value);
+        }
+        return collection;
+    }
+
+    private Iterables() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

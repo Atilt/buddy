@@ -27,12 +27,14 @@ package me.atilt.buddy;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.bukkit.BukkitCommandManager;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
-import me.atilt.buddy.event.EventManager;
+import me.atilt.buddy.event.Subscriber;
+import me.atilt.buddy.event.bukkit.BukkitEventBus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Buddy's implementation of {@link JavaPlugin} with the extended functionality provided
@@ -45,7 +47,7 @@ import javax.annotation.Nonnull;
 public abstract class BuddyJavaPlugin extends JavaPlugin implements BuddyPlugin {
 
     private CommandManager<CommandSender> commandManager;
-    private EventManager eventManager;
+    private Subscriber<? extends Event> bukkitEventBus;
 
     private boolean closed;
 
@@ -72,7 +74,7 @@ public abstract class BuddyJavaPlugin extends JavaPlugin implements BuddyPlugin 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        this.eventManager = new EventManager(this);
+        this.bukkitEventBus = new BukkitEventBus(this);
 
         enable();
     }
@@ -86,16 +88,16 @@ public abstract class BuddyJavaPlugin extends JavaPlugin implements BuddyPlugin 
         close();
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public CommandManager<CommandSender> commandManager() {
         return this.commandManager;
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public EventManager eventManager() {
-        return this.eventManager;
+    public <T extends Event> Subscriber<T> eventBus() {
+        return (Subscriber<T>) this.bukkitEventBus;
     }
 
     @Override

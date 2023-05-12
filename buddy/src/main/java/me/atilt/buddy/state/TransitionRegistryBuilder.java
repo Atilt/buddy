@@ -22,47 +22,41 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
+package me.atilt.buddy.state;
 
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import me.atilt.buddy.function.Iterables;
+import me.atilt.buddy.pattern.Builder;
+import me.atilt.buddy.state.trigger.Trigger;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public final class TransitionRegistryBuilder<T extends State> implements Builder<TransitionRegistry<T>> {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private final List<Transition<T>> transitions = new ArrayList<>();
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    public TransitionRegistryBuilder<T> transition(@NonNull Transition<T> transition) {
+        this.transitions.add(transition);
+        return this;
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
     @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public TransitionRegistryBuilder<T> inherit(@NonNull TransitionRegistry<T> type) {
+        this.transitions.addAll(type.asMap().values());
+        return this;
+    }
+
+    @NonNull
+    @Override
+    public TransitionRegistry<T> build() {
+        return new StateMachineTransitionRegistry<>(Iterables.toMap(this.transitions, transition -> transition.when().key(), HashMap::new));
+    }
 }

@@ -22,47 +22,36 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
+package me.atilt.buddy.state;
 
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import me.atilt.buddy.state.trigger.TriggerKey;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public final class StateMachineTransitionRegistry<T extends State> implements TransitionRegistry<T> {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private final Map<TriggerKey, Transition<T>> transitions;
+
+    public StateMachineTransitionRegistry(@NonNull Map<TriggerKey, Transition<T>> transitions) {
+        this.transitions = new HashMap<>(transitions);
+    }
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    @Override
+    public Map<TriggerKey, Transition<T>> asMap() {
+        return Collections.unmodifiableMap(this.transitions);
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
-    @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public Transition<T> apply(TriggerKey triggerKey) {
+        Transition<T> transition = this.transitions.get(triggerKey);
+        if (transition == null) {
+            return null;
+        }
+        return transition;
+    }
 }

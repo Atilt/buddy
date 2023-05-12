@@ -22,28 +22,32 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy.function;
+package me.atilt.buddy.location;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+public class Int3 {
 
-public final class Consumers {
+    private static final int X_MASK = 0x3FFFFFF;
+    private static final long X_SHIFT = 38;
+    private static final int Y_MASK = 0xFFF;
+    private static final long Y_SHIFT = 26;
+    private static final int Y_SHIFT_UNPACK = 20;
+    private static final long Z_MASK = 0x3FFFFFF;
+    private static final int Z_SHIFT_UNPACK = 6;
 
-    private static final Consumer EMPTY = none -> {};
-    private static final BiConsumer BI_EMPTY = (none, none2) -> {};
-
-    @NonNull
-    public static Consumer empty() {
-        return EMPTY;
+    public static long pack(int x, int y, int z) {
+        return ((long) (x & X_MASK) << X_SHIFT) | ((long) (y & Y_MASK) << Y_SHIFT) | (z & Z_MASK);
     }
 
-    @NonNull
-    public static BiConsumer biEmpty() {
-        return BI_EMPTY;
+    public static int[] unpack(long combined) {
+        int x = (int) (combined >> X_SHIFT);
+        int y = (int) ((combined >> Y_SHIFT) & Y_MASK) << Y_SHIFT_UNPACK >> Y_SHIFT_UNPACK;
+        int z = (int) (combined & Z_MASK) << Z_SHIFT_UNPACK >> Z_SHIFT_UNPACK;
+        y = (y << Y_SHIFT_UNPACK) >> Y_SHIFT_UNPACK;
+        z = (z << Z_SHIFT_UNPACK) >> Z_SHIFT_UNPACK;
+        return new int[]{x, y, z};
     }
-
-    private Consumers() {
-        throw new IllegalStateException("This class cannot be instantiated");
+    
+    private Int3() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

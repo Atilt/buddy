@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +31,7 @@ public final class CursorList<T> extends ArrayList<T> {
         super(initialCapacity);
     }
 
-    public CursorList(@Nonnull Collection<? extends T> collection) {
+    public CursorList(@NonNull Collection<? extends T> collection) {
         super(Preconditions.checkNotNull(collection, "collection"));
         if (collection.size() > 0) {
             this.cursor = 0;
@@ -44,6 +44,12 @@ public final class CursorList<T> extends ArrayList<T> {
 
     private void rebound() {
         this.cursor = isEmpty() ? -1 : Math.min(this.cursor, size() - 1);
+    }
+
+    private void assignBound() {
+        if (this.cursor == -1 && size() >= 1) {
+            this.cursor = 0;
+        }
     }
 
     /**
@@ -59,6 +65,16 @@ public final class CursorList<T> extends ArrayList<T> {
     }
 
     /**
+     * Determines if current cursor position
+     * is pointing to the last index of the list
+     *
+     * @return true if the cursor position is the last index
+     */
+    public boolean lastIndex() {
+        return this.cursor == this.size() - 1;
+    }
+
+    /**
      * Points the cursor to a new position.
      *
      * @since 1.0.0
@@ -67,7 +83,7 @@ public final class CursorList<T> extends ArrayList<T> {
      * @return the element at the specified position
      */
     public T cursor(@Nonnegative int cursor) {
-        Preconditions.checkArgument(cursor >= 0 && cursor < size(), "cursor out of range: %s/%s", cursor, size());
+        Preconditions.checkPositionIndex(cursor, size(), "cursor out of range");
         this.cursor = cursor;
         return get(cursor);
     }
@@ -84,7 +100,7 @@ public final class CursorList<T> extends ArrayList<T> {
     @Nullable
     public T shift(int amount) {
         int attemptedCursor = this.cursor + amount;
-        Preconditions.checkArgument(attemptedCursor >= 0 && attemptedCursor < size(), "shift out of range: %s (%s)", amount, attemptedCursor);
+        Preconditions.checkPositionIndex(attemptedCursor, size(), "shift out of range");
         this.cursor = attemptedCursor;
         return get(attemptedCursor);
     }
@@ -129,7 +145,7 @@ public final class CursorList<T> extends ArrayList<T> {
      *
      * @return the iterator
      */
-    @Nonnull
+    @NonNull
     public ListIterator<T> cursoredIterator() {
         if (this.cursor != -1 && this.cursor < size()) {
             return listIterator(this.cursor);
@@ -145,8 +161,39 @@ public final class CursorList<T> extends ArrayList<T> {
     }
 
     @Override
+    public boolean add(T t) {
+        boolean added = super.add(t);
+        if (added) {
+            assignBound();
+        }
+        return added;
+    }
+
+    @Override
+    public void add(@Nonnegative int index, T element) {
+        super.add(index, element);
+        assignBound();
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> collection) {
+        Preconditions.checkNotNull(collection, "collection");
+        boolean addedAll = super.addAll(collection);
+        assignBound();
+        return addedAll;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> collection) {
+        Preconditions.checkNotNull(collection, "collection");
+        boolean addedAll = super.addAll(index, collection);
+        assignBound();
+        return addedAll;
+    }
+
+    @Override
     public T remove(@Nonnegative int index) {
-        Preconditions.checkArgument(index >= 0 && index < size(), "index");
+        Preconditions.checkPositionIndex(index, size(), "index out of range");
         T removal = super.remove(index);
         rebound();
         return removal;
@@ -162,7 +209,7 @@ public final class CursorList<T> extends ArrayList<T> {
     }
 
     @Override
-    public boolean removeIf(@Nonnull Predicate<? super T> filter) {
+    public boolean removeIf(@NonNull Predicate<? super T> filter) {
         Preconditions.checkNotNull(filter, "filter");
         boolean removed = super.removeIf(filter);
         if (removed) {
@@ -172,7 +219,7 @@ public final class CursorList<T> extends ArrayList<T> {
     }
 
     @Override
-    public boolean removeAll(@Nonnull Collection<?> collection) {
+    public boolean removeAll(@NonNull Collection<?> collection) {
         Preconditions.checkNotNull(collection, "collection");
         boolean removedAll = super.removeAll(collection);
         rebound();

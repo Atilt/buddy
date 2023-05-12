@@ -22,47 +22,42 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
-
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+package me.atilt.buddy.state.trigger;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Objects;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+class StateTriggerKey implements TriggerKey {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private final String domain;
+
+    StateTriggerKey(String domain) {
+        this.domain = domain;
+    }
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    @Override
+    public String domain() {
+        return this.domain;
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
-    @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof StateTriggerKey)) return false;
+        StateTriggerKey that = (StateTriggerKey) other;
+        return this.domain.equalsIgnoreCase(that.domain());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.domain);
+    }
+
+    @Override
+    public String toString() {
+        return "StateTriggerKey{" +
+                "domain='" + this.domain + '\'' +
+                '}';
+    }
 }

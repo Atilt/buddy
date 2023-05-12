@@ -27,13 +27,13 @@ package me.atilt.buddy.function;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 public final class Lists {
 
-    @Nonnull
-    public static <T> T previous(@Nonnull List<T> list, @Nonnegative int index) {
+    @NonNull
+    public static <T> T previous(@NonNull List<T> list, @Nonnegative int index) {
         Preconditions.checkNotNull(list, "list");
         Preconditions.checkState(!list.isEmpty(), "empty list");
         Preconditions.checkArgument(index >= 0 && index < list.size(), "index out of range: %s", index);
@@ -41,8 +41,8 @@ public final class Lists {
         return list.get(previousIndex);
     }
 
-    @Nonnull
-    public static <T> T next(@Nonnull List<T> list, @Nonnegative int index) {
+    @NonNull
+    public static <T> T next(@NonNull List<T> list, @Nonnegative int index) {
         Preconditions.checkNotNull(list, "list");
         Preconditions.checkState(!list.isEmpty(), "empty list");
         Preconditions.checkArgument(index >= 0 && index < list.size(), "index out of range: %s", index);

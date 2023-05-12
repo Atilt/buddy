@@ -24,6 +24,8 @@
 
 package me.atilt.buddy.item;
 
+import me.atilt.buddy.pattern.Builder;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -32,7 +34,9 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.google.common.base.Preconditions;
 import java.util.function.UnaryOperator;
@@ -50,64 +54,71 @@ public final class ItemStacks {
 
     /**
      * Creates a new builder for Bukkit's {@link ItemStack}
-     * @return the builder {@link Builder} for the {@link ItemStack}
+     * @return the builder {@link ItemStackBuilder} for the {@link ItemStack}
      */
-    @Nonnull
-    public static Builder newBuilder() {
-        return new Builder();
+    @NonNull
+    public static ItemStackBuilder newBuilder() {
+        return new ItemStackBuilder();
     }
 
-    public static final class Builder implements me.atilt.buddy.pattern.Builder<ItemStack> {
+    @NonNull
+    public static List<Component> lore(@NonNull ItemMeta itemMeta) {
+        Preconditions.checkNotNull(itemMeta, "itemMeta");
+        List<Component> lore = itemMeta.lore();
+        return lore != null ? lore : new ArrayList<>();
+    }
+
+    public static final class ItemStackBuilder implements Builder<ItemStack> {
 
         private final ItemStack itemStack;
 
-        private Builder() {
+        private ItemStackBuilder() {
             this.itemStack = new ItemStack(Material.STONE, 1);
         }
 
-        @Nonnull
-        public Builder type(@Nonnull Material type) {
+        @NonNull
+        public ItemStackBuilder type(@NonNull Material type) {
             Preconditions.checkNotNull(type, "type");
             this.itemStack.setType(type);
             return this;
         }
 
-        @Nonnull
-        public Builder amount(@Nonnegative int amount) {
+        @NonNull
+        public ItemStackBuilder amount(@Nonnegative int amount) {
             Preconditions.checkArgument(amount > 0, "amount must be positive: %s", amount);
             this.itemStack.setAmount(amount);
             return this;
         }
 
-        @Nonnull
-        public <T extends ItemMeta> Builder meta(Class<T> metaType, @Nonnull UnaryOperator<T> operator) {
+        @NonNull
+        public <T extends ItemMeta> ItemStackBuilder meta(Class<T> metaType, @NonNull UnaryOperator<T> operator) {
             Preconditions.checkNotNull(metaType, "metaType");
             Preconditions.checkNotNull(operator, "function");
 
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             if (!metaType.isInstance(itemMeta)) {
-                throw new IllegalStateException("meta mismatch");
+                throw new IllegalStateException("meta mismatch. expected: " + metaType.getName() + ", found: " + (itemMeta == null ? "null" : itemMeta.getClass().getName()));
             }
             this.itemStack.setItemMeta(operator.apply(metaType.cast(itemMeta)));
             return this;
         }
 
-        @Nonnull
-        public Builder meta(@Nonnull UnaryOperator<ItemMeta> function) {
+        @NonNull
+        public ItemStackBuilder meta(@NonNull UnaryOperator<ItemMeta> function) {
             Preconditions.checkNotNull(function, "function");
             return meta(ItemMeta.class, function);
         }
 
-        @Nonnull
-        public Builder damage(int amount) {
+        @NonNull
+        public ItemStackBuilder damage(int amount) {
             return meta(Damageable.class, damageable -> {
                 damageable.setDamage(amount);
                 return damageable;
             });
         }
 
-        @Nonnull
-        public Builder displayName(@Nonnull String displayName) {
+        @NonNull
+        public ItemStackBuilder displayName(@NonNull String displayName) {
             Preconditions.checkNotNull(displayName, "displayName");
             return meta(itemMeta -> {
                 itemMeta.setDisplayName(displayName);
@@ -115,8 +126,8 @@ public final class ItemStacks {
             });
         }
 
-        @Nonnull
-        public Builder lore(@Nonnull List<String> lore) {
+        @NonNull
+        public ItemStackBuilder lore(@NonNull List<String> lore) {
             Preconditions.checkNotNull(lore, "lore");
             return meta(itemMeta -> {
                 itemMeta.setLore(lore);
@@ -124,8 +135,8 @@ public final class ItemStacks {
             });
         }
 
-        @Nonnull
-        public Builder enchant(@Nonnull Enchantment enchantment, @Nonnegative int level, boolean bypass) {
+        @NonNull
+        public ItemStackBuilder enchant(@NonNull Enchantment enchantment, @Nonnegative int level, boolean bypass) {
             Preconditions.checkNotNull(enchantment, "enchantment");
             Preconditions.checkArgument(level > 0, "level out of bounds: %s", level);
             return meta(itemMeta -> {
@@ -134,8 +145,8 @@ public final class ItemStacks {
             });
         }
 
-        @Nonnull
-        public Builder flag(@Nonnull ItemFlag... flags) {
+        @NonNull
+        public ItemStackBuilder flag(@NonNull ItemFlag... flags) {
             Preconditions.checkNotNull(flags, "flags");
             return meta(itemMeta -> {
                 itemMeta.addItemFlags(flags);
@@ -143,9 +154,9 @@ public final class ItemStacks {
             });
         }
 
-        @Nonnull
+        @NonNull
         @Override
-        public Builder inherit(@Nonnull ItemStack itemStack) {
+        public ItemStackBuilder inherit(@NonNull ItemStack itemStack) {
             this.itemStack.setType(itemStack.getType());
             this.itemStack.setItemMeta(itemStack.getItemMeta().clone());
             this.itemStack.setData(itemStack.getData().clone());
@@ -154,7 +165,7 @@ public final class ItemStacks {
             return this;
         }
 
-        @Nonnull
+        @NonNull
         @Override
         public ItemStack build() {
             return this.itemStack;

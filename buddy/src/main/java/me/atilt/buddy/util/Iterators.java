@@ -26,7 +26,7 @@ package me.atilt.buddy.util;
 
 import com.google.common.base.Preconditions;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -34,19 +34,19 @@ import java.util.function.Consumer;
 
 public final class Iterators {
 
-    @Nonnull
-    public static <T> Iterator<T> unmodifiable(@Nonnull Iterator<T> iterator) {
+    @NonNull
+    public static <T> Iterator<T> unmodifiable(@NonNull Iterator<T> iterator) {
         Preconditions.checkNotNull(iterator, "iterator");
         return iterator instanceof ImmutableIterator ? iterator : new ImmutableIterator<>(iterator);
     }
 
-    @Nonnull
-    public static <T> Iterator<T> unmodifiable(@Nonnull Collection<T> collection) {
+    @NonNull
+    public static <T> Iterator<T> unmodifiable(@NonNull Collection<T> collection) {
         Preconditions.checkNotNull(collection, "collection");
         return unmodifiable(collection.iterator());
     }
 
-    @Nonnull
+    @NonNull
     public static Iterator empty() {
         return EmptyIterator.EMPTY;
     }

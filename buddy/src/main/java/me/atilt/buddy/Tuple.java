@@ -24,45 +24,57 @@
 
 package me.atilt.buddy;
 
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
-
 import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+import java.util.Objects;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public class Tuple<T, U> {
+    private final T first;
+    private final U second;
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private Tuple(@Nullable T first, @Nullable U second) {
+        this.first = first;
+        this.second = second;
+    }
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    public static <T, U> Tuple<T, U> of(@Nullable T first, @Nullable U second) {
+        return new Tuple<>(first, second);
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
+    @Nullable
+    public T first() {
+        return this.first;
+    }
+
+    @Nullable
+    public U second() {
+        return this.second;
+    }
+
     @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    public Tuple<U, T> reverse() {
+        return of(this.second, this.first);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tuple<?, ?> tuple = (Tuple<?, ?>) o;
+        return Objects.equals(this.first, tuple.first()) && Objects.equals(this.second, tuple.second());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.first, this.second);
+    }
+
+    @Override
+    public String toString() {
+        return "Tuple{" +
+                "item1=" + this.first +
+                ", item2=" + this.second +
+                '}';
+    }
 }

@@ -22,47 +22,35 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
-
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+package me.atilt.buddy.state.trigger;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Objects;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public final class TransitionTrigger<T> implements Trigger<T> {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private final TriggerKey triggerKey;
+
+    public TransitionTrigger(TriggerKey triggerKey) {
+        this.triggerKey = triggerKey;
+    }
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    @Override
+    public TriggerKey key() {
+        return this.triggerKey;
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
-    @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransitionTrigger)) return false;
+        TransitionTrigger<?> that = (TransitionTrigger<?>) o;
+        return triggerKey.equals(that.triggerKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(triggerKey);
+    }
 }

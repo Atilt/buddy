@@ -19,12 +19,24 @@
     </repositories>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.36</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.36</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-core</artifactId>
@@ -60,14 +72,14 @@
                     <minimizeJar>true</minimizeJar>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                     <relocations>
-                        <relocation>
+<!--                        <relocation>
                             <pattern>cloud.commandframework</pattern>
                             <shadedPattern>me.atilt.buddy.command.cloud</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.leangen.geantyref</pattern>
                             <shadedPattern>me.atilt.buddy.command.typetoken</shadedPattern>
-                        </relocation>
+                        </relocation>-->
                         <relocation>
                             <pattern>com.github.benmanes.caffeine</pattern>
                             <shadedPattern>me.atilt.buddy.caffeine</shadedPattern>

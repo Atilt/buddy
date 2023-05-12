@@ -24,70 +24,17 @@
 
 package me.atilt.buddy.state;
 
-import me.atilt.buddy.closeable.Closeable;
+import java.util.function.Supplier;
 
-/**
- * Represents a state component of a
- * state machine.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface State extends Closeable {
+public interface State {
 
-    /**
-     * Determines if the state has been started.
-     *
-     * @since 1.0.0
-     *
-     * @return true if the state has been started
-     */
-    boolean started();
+    boolean enter();
 
-    /**
-     * Determines if the state is currently updating.
-     *
-     * @since 1.0.0
-     *
-     * @return true if the state is currently updating.
-     */
-    boolean updating();
+    boolean update();
 
-    /**
-     * Determines if the state is completed.
-     *
-     * @since 1.0.0
-     *
-     * @return true if the state is completed.
-     */
-    boolean completed();
+    boolean exit();
 
-    /**
-     * Starts the current state.
-     *
-     * @since 1.0.0
-     */
-    void start();
-
-    /**
-     * Completes the current state.
-     *
-     * @since 1.0.0
-     */
-    void complete();
-
-    /**
-     * Updates the current state.
-     *
-     * @since 1.0.0
-     */
-    void update();
-
-    /**
-     * Resets the current state to its default condition.
-     *
-     * @since 1.0.0
-     */
-    void reset();
+    default <T extends State> T self() {
+        return (T) this;
+    }
 }

@@ -22,47 +22,57 @@
  * SOFTWARE.
  */
 
-package me.atilt.buddy;
+package me.atilt.buddy.gui.content.slot;
 
-import cloud.commandframework.CommandManager;
-import me.atilt.buddy.closeable.Closeable;
-import me.atilt.buddy.event.Subscriber;
-import me.atilt.buddy.reloadable.Reloadable;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import me.atilt.buddy.gui.slot.Click;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.function.Consumer;
 
-/**
- * Represents a {@link Plugin} with extended functionality related to
- * Buddy.
- *
- * @since 1.0.0
- * @version 1.0.0
- * @author Atilt
- */
-public interface BuddyPlugin extends Plugin, Reloadable, Closeable {
+public final class EmptySlotContent implements SlotContent {
 
-    /**
-     * Provides access to Cloud's {@link CommandManager} for
-     * manging Bukkit's {@link org.bukkit.command.CommandExecutor} and {@link org.bukkit.command.Command}
-     *
-     * @since 1.0.0
-     *
-     * @return the command manager
-     */
+    private static final ItemStack AIR = new ItemStack(Material.AIR);
+    private static final Click NO_CLICK = new Click() {
+        @NonNull
+        @Override
+        public Consumer<Player> action() {
+            return player -> {};
+        }
+    };
+
     @NonNull
-    CommandManager<CommandSender> commandManager();
+    @Override
+    public SlotContent raw() {
+        return this;
+    }
 
-    /**
-     * Provides access to Buddy's {@link me.atilt.buddy.event.Subscriber <Event>} for
-     * managing Bukkit's {@link org.bukkit.event.Event} and {@link org.bukkit.event.Listener}
-     *
-     * @since 1.0.0
-     *
-     * @return the event manager
-     */
     @NonNull
-    <T extends Event> Subscriber<T> eventBus();
+    @Override
+    public ItemStack item() {
+        return AIR;
+    }
+
+    @NonNull
+    @Override
+    public Click click() {
+        return NO_CLICK;
+    }
+
+    @Override
+    public boolean enter() {
+        return true;
+    }
+
+    @Override
+    public boolean update() {
+        return false;
+    }
+
+    @Override
+    public boolean exit() {
+        return true;
+    }
 }

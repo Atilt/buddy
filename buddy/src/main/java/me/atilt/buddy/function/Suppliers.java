@@ -24,13 +24,13 @@
 
 package me.atilt.buddy.function;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class Suppliers {
 
-    public static <T, U> Function<T, U> functionalized(@Nonnull Supplier<U> supplier) {
+    public static <T, U> Function<T, U> functionalized(@NonNull Supplier<U> supplier) {
         return t -> supplier.get();
     }
 
